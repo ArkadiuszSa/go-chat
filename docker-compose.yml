@@ -1,28 +1,23 @@
-version: "3.7"
+version: '3.3'
 
 services:
-  db:
-    container_name: db-service-chat-app
-    image: postgres:alpine
-    environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: root
-      POSTGRES_DB: chat-app
+    db:
+        container_name: db-service-go-chat
+        image: postgres:alpine
+        environment:
+            POSTGRES_PASSWORD: root
+            POSTGRES_USER: root
+            POSTGRES_DB: go-chat
 
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend-service-chat-app
-
-  backend:
-    build:
-      context: ./backend
-    container_name: backend-service-chat-app
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_DATABASE_NAME: chat-app
-    depends_on:
-      - db
+    backend:
+        build:
+            context: ./backend
+        container_name: backend-service-go-chat
+        environment:
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_USER: root
+            DB_PASSWORD: root
+            DB_DATABASE_NAME: go-chat
+        depends_on:
+            - db
