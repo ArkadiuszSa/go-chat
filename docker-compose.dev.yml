@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/backend:delegated
+    ports:
+      - "4000:4000"
+  db:
+    ports:
+      - "5432:5432"
