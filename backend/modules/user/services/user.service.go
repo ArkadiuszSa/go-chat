@@ -1,8 +1,9 @@
 package user
 
 import (
-	"fmt"
 	"github.com/ArkadiuszSa/go-chat/modules/user/models"
+	userDto "github.com/ArkadiuszSa/go-chat/modules/user/dto"
+
 	"log"
 	"net/http"
 
@@ -19,10 +20,7 @@ func InitiateDB(db *pg.DB) {
 }
 
 func GetAllUsers(c *gin.Context) {
-
-	fmt.Println("dzialam")
-
-	var users []user.Model
+	var users []user.User
 	err := dbConnect.Model(&users).Select()
 
 	if err != nil {
@@ -43,38 +41,25 @@ func GetAllUsers(c *gin.Context) {
 }
 
 //CreateUser -  create new user in db
-func CreateUser(c *gin.Context) {
-	var newUser user.Model
-	c.BindJSON(&newUser)
-	name := newUser.Name
-	email := newUser.Email
-	id := guuid.New().String()
-
-	insertError := dbConnect.Insert(&user.Model{
-		ID:    id,
-		Name:  name,
-		Email: email,
-	})
-	if insertError != nil {
-		log.Printf("Error while inserting new user into db, Reason: %v\n", insertError)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":  http.StatusInternalServerError,
-			"message": "Something went wrong",
-		})
-		return
+func CreateUser(newUser userDto.RegisterUserDto )*user.User {
+	var newUserData = &user.User{
+		ID:    guuid.New().String(),
+		Name:  newUser.Name,
+		Email: newUser.Email,
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"status":  http.StatusCreated,
-		"message": "User created Successfully",
-	})
-	return
+	log.Print(newUserData)
+
+	dbConnect.Insert(newUserData)
+
+	return newUserData
 }
 
 //GetSingleUser -  find user by id
 func GetSingleUser(c *gin.Context) {
-	userID := c.Param("userId")
-	user := &user.Model{ID: userID}
+	userID := c.Param("userID")
+
+	user := &user.User{ID: userID}
 	err := dbConnect.Select(user)
 
 	if err != nil {
@@ -92,6 +77,14 @@ func GetSingleUser(c *gin.Context) {
 		"data":    user,
 	})
 	return
+}
+
+// GetSingleUserByEmail - will find user by email and return user data
+func GetSingleUserByEmail(email string) *user.User {
+	userData := new(user.User)
+	dbConnect.Model(userData).Where("email = ?", email).Select()
+
+	return userData
 }
 
 // //EditUser - edit user with provided id
@@ -120,7 +113,7 @@ func GetSingleUser(c *gin.Context) {
 //DeleteUser - delete user by id
 func DeleteUser(c *gin.Context) {
 	userID := c.Param("userID")
-	user := &user.Model{ID: userID}
+	user := &user.User{ID: userID}
 
 	err := dbConnect.Delete(user)
 	if err != nil {

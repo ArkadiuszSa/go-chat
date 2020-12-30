@@ -12,7 +12,7 @@ import (
 //Connect Connecting to db
 func Connect() *pg.DB {
 	opts := &pg.Options{
-		Addr:     "172.25.0.1:5432",
+		Addr:     "192.168.0.115:5432",
 		User:     "root",
 		Password: "root",
 		Database: "go-chat",

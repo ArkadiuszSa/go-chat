@@ -1,18 +1,18 @@
 package user
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-
+	"github.com/ArkadiuszSa/go-chat/modules/auth/middleware"
 	"github.com/ArkadiuszSa/go-chat/modules/user/services"
 )
 
 //Routes - return user routes
 func Routes(router *gin.Engine) {
-	router.GET("/", welcome)
+	router.GET("/", auth.AuthorizeJWT(), welcome)
 	router.GET("/users", user.GetAllUsers)
-	router.POST("/user", user.CreateUser)
+	// router.POST("/user", user.CreateUser)
 	router.GET("/user/:userID", user.GetSingleUser)
 	// router.PUT("/user/:userID", user.EditTodo)
 	router.DELETE("/user/:userID", user.DeleteUser)
