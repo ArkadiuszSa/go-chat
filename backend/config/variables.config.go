@@ -1,8 +1,4 @@
 package config
 
-import (
-	"os"
-)
-
 //SecretKey - used to hash user password
-var SecretKey string = os.Getenv("SECRET_KEY")
+var SecretKey string = "64436418-4d24-11eb-ae93-0242ac130002"

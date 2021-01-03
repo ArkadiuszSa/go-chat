@@ -1,9 +1,10 @@
 package user
 
 import (
+	"log"
+
 	"github.com/go-pg/pg/v9"
 	orm "github.com/go-pg/pg/v9/orm"
-	"log"
 )
 
 //User - user database model
@@ -11,6 +12,7 @@ type User struct {
 	ID    string `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
+	Password []byte `json:"password"`
 }
 
 //CreateUserTable - create users table in database

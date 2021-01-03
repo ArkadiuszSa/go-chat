@@ -1,7 +1,7 @@
-package dto
+package auth
 
-//Login credential
-type Credentials struct {
+//Credentials - data required for obtain token
+type CredentialsDto struct {
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password []byte `json:"password"`
 }

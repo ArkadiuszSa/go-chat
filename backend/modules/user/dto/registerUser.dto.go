@@ -4,6 +4,7 @@ package user
 type RegisterUserDto struct {
 	Email string `json:"email"`
 	Name string `json:"name"`
+	Password []byte `json:"password"`
 }
 
 
