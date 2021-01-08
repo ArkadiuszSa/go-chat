@@ -95,29 +95,6 @@ func GetSingleUserByEmail(email string) *userModel.User {
 	return userData
 }
 
-// //EditUser - edit user with provided id
-// func EditUser(c *gin.Context) {
-// 	userID := c.Param("userID")
-// 	var user user.Model
-// 	c.BindJSON(&user)
-
-// 	_, err := dbConnect.Model(&user.Model{}).Set("completed = ?", completed).Where("id = ?", userId).Update()
-// 	if err != nil {
-// 		log.Printf("Error, Reason: %v\n", err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"status":  500,
-// 			"message": "Something went wrong",
-// 		})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, gin.H{
-// 		"status":  200,
-// 		"message": "User Edited Successfully",
-// 	})
-// 	return
-// }
-
 //DeleteUser - delete user by id
 func DeleteUser(c *gin.Context) {
 	userID := c.Param("userID")
