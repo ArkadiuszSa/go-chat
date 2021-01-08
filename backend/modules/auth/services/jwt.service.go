@@ -24,7 +24,6 @@ type jwtServices struct {
 }
 
 
-
  func GenerateToken(email string, userId string) string {
 	claims := &authCustomClaims{
 		email,
@@ -53,3 +52,4 @@ func ValidateToken(encodedToken string) (*jwt.Token, error) {
 	})
 
 }
+
