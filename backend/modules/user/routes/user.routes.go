@@ -10,7 +10,7 @@ import (
 //Routes - return user routes
 func Routes(router *gin.Engine) {
 	router.GET("/users", user.GetAllUsers)
-	router.GET("/user/:userID", user.GetSingleUser)
+	router.GET("/user/:userID/", user.GetSingleUser)
 	router.DELETE("/user/:userID", user.DeleteUser)
 	router.NoRoute(notFound)
 }

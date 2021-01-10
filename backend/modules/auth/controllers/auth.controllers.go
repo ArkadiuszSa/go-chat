@@ -46,10 +46,10 @@ func ObtainToken(c *gin.Context)  {
 
 	token:= authServices.GenerateToken(userData.Email, userData.ID)
 
-	c.JSON(http.StatusBadRequest, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": "Successfully obtained token",
-		"body": token,
+		"body": authDto.TokensDto{AccessToken: token, RefreshToken:""},
 	})
 	return
 

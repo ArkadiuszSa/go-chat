@@ -14,19 +14,18 @@ type JWTService interface {
 	ValidateToken(token string) (*jwt.Token, error)
 }
 type authCustomClaims struct {
-	Name string `json:"name"`
+	ID string `json:"id"`
+	ExpirationDate int64 `json:expirationDate`
+	IssueDate int64 `json:"issueDate"`
 	jwt.StandardClaims
-}
-
-type jwtServices struct {
-	secretKey string
-	issure    string
 }
 
 
  func GenerateToken(email string, userId string) string {
-	claims := &authCustomClaims{
-		email,
+	claims := &authCustomClaims{	
+		userId,
+		time.Now().Add(time.Hour * 48).Unix(),
+		time.Now().Unix(),	
 		jwt.StandardClaims{
 			Id: userId,
 			ExpiresAt: time.Now().Add(time.Hour * 48).Unix(),

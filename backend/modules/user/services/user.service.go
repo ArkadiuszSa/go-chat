@@ -65,7 +65,7 @@ func CreateUser(newUser userDto.RegisterUserDto )*userModel.User {
 //GetSingleUser -  find user by id
 func GetSingleUser(c *gin.Context) {
 	userID := c.Param("userID")
-
+	log.Print(userID)
 	user := &userModel.User{ID: userID}
 	err := dbConnect.Select(user)
 
