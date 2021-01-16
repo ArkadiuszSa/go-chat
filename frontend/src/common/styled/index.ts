@@ -1,3 +1,4 @@
+export * from './AuthWrapper';
 export * from './Row';
 export * from './Button';
 export * from './FormError';

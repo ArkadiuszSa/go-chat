@@ -4,26 +4,25 @@ import { Input } from 'common/styled';
 
 import { FormField } from '../FormField';
 import { FormFieldProps } from 'typings/Form';
+import { RegisterOptions, useFormContext } from 'react-hook-form';
 
 interface Props extends FormFieldProps {
-    value: string | number;
+    registerOptions: RegisterOptions;
     type?: string;
     labelColor?: string;
+    showError?: boolean;
 }
 
-export const TextInputFormField: FC<Props> = ({ name, type = 'text', ...props }) => (
-    <FormField
-        label={props.label}
-        error={props.error}
-        touched={props.touched}
-        labelColor={props.labelColor}
-    >
-        <Input
-            name={name}
-            type={type}
-            value={props.value}
-            onBlur={props.handleBlur}
-            onChange={props.handleChange}
-        />
-    </FormField>
-);
+export const TextInputFormField: FC<Props> = ({
+    name,
+    type = 'text',
+    registerOptions,
+    ...formFieldProps
+}) => {
+    const { register } = useFormContext();
+    return (
+        <FormField name={name} {...formFieldProps}>
+            <Input name={name} type={type} ref={register(registerOptions)} />
+        </FormField>
+    );
+};
