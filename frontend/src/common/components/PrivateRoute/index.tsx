@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
+
+import { UserContext } from 'core/contexts/UserContext';
 
 interface Props extends RouteProps {
     component: React.FC;
-    isLoggedIn: boolean;
-    isPosting: boolean;
 }
 
-export const PrivateRoute: React.FC<Props> = ({
-    component: Component,
-    isLoggedIn,
-    isPosting,
-    ...rest
-}) => (
-    <Route
-        {...rest}
-        render={() => (isPosting ? null : isLoggedIn ? <Component /> : <Redirect to="/log-in" />)}
-    />
-);
+export const PrivateRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
+    const {
+        state: { isLoggingIn, isLoggedIn },
+    } = useContext(UserContext);
+
+    return (
+        <Route
+            {...rest}
+            render={() =>
+                isLoggingIn ? null : isLoggedIn ? <Component /> : <Redirect to="/log-in" />
+            }
+        />
+    );
+};

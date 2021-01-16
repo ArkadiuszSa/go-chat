@@ -1,12 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import MoonLoader from 'react-spinners/MoonLoader';
 
-import { RegisterRequest } from 'typings';
-
-import { authService } from 'core/rootService';
+import { routes } from 'config/routesConfig';
+import { ServicesContext } from 'core/contexts/ServicesContext';
+import { setIsLoggedIn, setUserData, UserContext } from 'core/contexts/UserContext';
 import { TextInputFormField } from 'common/components';
 import { AuthForm, Button, ButtonLoaderWrapper, SubmitButtonWrapper } from 'common/styled';
+import { handleRedirect } from 'common/helpers/handleRedirect';
+import { RegisterRequest } from 'typings';
 
 interface RegisterFormValues extends RegisterRequest {
     passwordRepetition: string;
@@ -15,6 +17,10 @@ interface RegisterFormValues extends RegisterRequest {
 const RegisterPanel: FC = () => {
     const form = useForm<RegisterFormValues>({ mode: 'onBlur' });
     const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState(null);
+
+    const { dispatch } = useContext(UserContext);
+    const { authService } = useContext(ServicesContext);
 
     const onSubmit = (registerRequest: RegisterRequest) => {
         setIsLoading(true);
@@ -22,7 +28,9 @@ const RegisterPanel: FC = () => {
         authService
             .register(registerRequest)
             .then(userProfile => {
-                console.log('heajajadjnsflkjsd');
+                dispatch(setUserData(userProfile));
+                dispatch(setIsLoggedIn(true));
+                handleRedirect(routes.chat);
                 console.log(userProfile);
             })
             .catch(err => {

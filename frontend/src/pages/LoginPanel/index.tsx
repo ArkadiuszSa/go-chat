@@ -1,10 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { authService } from 'core/rootService';
-import { Credentials } from 'typings/Auth';
+import { routes } from 'config/routesConfig';
+import { ServicesContext } from 'core/contexts/ServicesContext';
+import { setIsLoggedIn, setUserData, UserContext } from 'core/contexts/UserContext';
 import { TextInputFormField } from 'common/components';
+import { handleRedirect } from 'common/helpers/handleRedirect';
 import {
     FormError,
     SubmitButtonWrapper,
@@ -12,11 +14,15 @@ import {
     ButtonLoaderWrapper,
     AuthForm,
 } from 'common/styled';
+import { Credentials } from 'typings';
 
 import * as S from './styles';
 
 const LogInPanel: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
+
+    const { dispatch } = useContext(UserContext);
+    const { authService } = useContext(ServicesContext);
 
     const onSubmit = (values: Credentials) => {
         console.log(values);
@@ -25,6 +31,9 @@ const LogInPanel: FC = () => {
         authService
             .logIn(values)
             .then(userProfile => {
+                dispatch(setUserData(userProfile));
+                dispatch(setIsLoggedIn(true));
+                handleRedirect(routes.chat);
                 console.log(userProfile);
             })
             .catch(err => {
